@@ -102,24 +102,21 @@ motion_vector_df = pd.DataFrame(motion_vectors)
 # Save the data to CSV files
 csv_circle_data_path = 'circle_data_output.csv'
 csv_motion_vectors_path = 'motion_vectors_output.csv'
-circle_df.to_csv(csv_circle_data_path, index=False)
+
 motion_vector_df.to_csv(csv_motion_vectors_path, index=False)
 
-print(f"Circle data has been saved to {csv_circle_data_path}")
+
 print(f"Motion vector data has been saved to {csv_motion_vectors_path}")
 
-# Plot the coordinates of the circle centers with the same size as the image
-plt.figure(figsize=(8, 6))
-plt.scatter(circle_df['Center (x, y)'].apply(lambda x: x[0]), circle_df['Center (x, y)'].apply(lambda x: x[1]), color='blue', label='Circle Centers')
-
 # Plot the motion vectors (arrows) between frames
+plt.figure(figsize=(8, 6))
 for _, row in motion_vector_df.iterrows():
     start = row['Start (x, y)']
     end = row['End (x, y)']
     plt.arrow(start[0], start[1], end[0] - start[0], end[1] - start[1], 
               head_width=5, head_length=10, fc='red', ec='red', label='Motion Vectors')
 
-plt.title('Circle Center Coordinates and Motion Vectors')
+plt.title('Motion Vectors')
 plt.xlabel('X Coordinate')
 plt.ylabel('Y Coordinate')
 plt.xlim(0, image_width)  # Set the x-axis limit to match image width
@@ -127,10 +124,4 @@ plt.ylim(image_height, 0)  # Set the y-axis limit to match image height (inverte
 plt.grid(True)
 plt.gca().set_aspect('equal', adjustable='box')  # Ensure the aspect ratio matches the image
 plt.legend()
-
-# Save the plot as an image file (PNG)
-plot_output_path = 'circle_and_motion_vectors_plot.png'
-plt.savefig(plot_output_path)
 plt.show()
-
-print(f"Plot with motion vectors has been saved to {plot_output_path}")
